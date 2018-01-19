@@ -1,4 +1,3 @@
-#include <cmath>
 #include <iostream>
 #include <queue>
 
@@ -27,8 +26,6 @@ int main()
 {
 	Mat imgtest = imread("arena.png",1);
 	Mat imgref = imread(REF,1);
-	imshow("Ref",imgref);
-	waitKey(0);
 	vector<Point> targets;
 	getShapes(imgtest, imgref, targets);
 	/*VideoCapture vid(VIDEO);
