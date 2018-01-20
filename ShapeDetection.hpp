@@ -88,6 +88,17 @@ void getShapes(cv::Mat img, cv::Mat imgref, std::vector<cv::Point> &targets)
 	{
 		cv::Mat imgt = makeTemplate(imgref, ColorList[ColorOrder[k]]);
 		cv::imshow("Template", imgt);
+		cv::Mat imgmatch(imgsep.rows - imgt.rows + 1, imgsep.cols + imgt.cols + 1, CV_32FC1);
+		cv::matchTemplate(imgsep, imgt, imgmatch, CV_TM_SQDIFF);
+		//cv::Mat res;
+		//imgt.convertTo(res, CV_8UC1); //with or without scaling, try both
+		cv::Point maxima;
+		double maxMatch = INT_MAX;
+		cv::minMaxLoc( imgmatch, &maxMatch, NULL, &maxima, NULL, cv::Mat() );
+		maxima.x += imgt.cols/2;
+		maxima.y += imgt.rows/2;
+		cv::circle(img, maxima, 3, cv::Scalar(0,0,0),CV_FILLED);
+		cv::imshow("Arena", img);
 		cv::waitKey(0);
 	}
 }
