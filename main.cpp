@@ -14,10 +14,9 @@
 #endif
 
 #include "ShapeDetection.hpp"
-//#include "BotPosition.hpp"
+#include "BotPosition.hpp"
 
-#define VIDEO "PS2.mp4"
-#define REF "order.png"
+#define REF "final.png"
 
 using namespace cv;
 using namespace std;

@@ -1,4 +1,7 @@
+#ifndef CMATH
+#define CMATH
 #include <cmath>
+#endif
 
 #ifndef OPENCV
 #define OPENCV
@@ -90,8 +93,6 @@ void getShapes(cv::Mat img, cv::Mat imgref, std::vector<cv::Point> &targets)
 		cv::imshow("Template", imgt);
 		cv::Mat imgmatch(imgsep.rows - imgt.rows + 1, imgsep.cols + imgt.cols + 1, CV_32FC1);
 		cv::matchTemplate(imgsep, imgt, imgmatch, CV_TM_SQDIFF);
-		//cv::Mat res;
-		//imgt.convertTo(res, CV_8UC1); //with or without scaling, try both
 		cv::Point maxima;
 		double maxMatch = INT_MAX;
 		cv::minMaxLoc( imgmatch, &maxMatch, NULL, &maxima, NULL, cv::Mat() );
@@ -99,6 +100,7 @@ void getShapes(cv::Mat img, cv::Mat imgref, std::vector<cv::Point> &targets)
 		maxima.y += imgt.rows/2;
 		cv::circle(img, maxima, 3, cv::Scalar(0,0,0),CV_FILLED);
 		cv::imshow("Arena", img);
+		targets.push_back(maxima);
 		cv::waitKey(0);
 	}
 }
