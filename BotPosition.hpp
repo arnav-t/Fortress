@@ -1,3 +1,5 @@
+#define ARDUINO "/dev/ttyACM0"
+
 #ifndef CMATH
 #define CMATH
 #include <cmath>
@@ -19,6 +21,9 @@ int frontMin = 35;
 int frontMax = 70;
 int backMin = 100;
 int backMax = 130;
+int distThres = 50;
+
+std::ofstream arduino;
 
 cv::Point getCentroid(cv::Mat img)
 {
@@ -42,12 +47,36 @@ cv::Point getCentroid(cv::Mat img)
 	return centroid; 
 }
 
-float getBotOrientation(cv::Mat img)
+void sendCommand(char c)
+{
+	//arduino.seekp(0);
+	arduino.put(c);
+}
+
+void init_arduino() 
+{
+    arduino.open(ARDUINO, std::ios::out);
+}
+
+void flashLED(int n)
+{
+	sendCommand((char)(n+48));
+}
+
+float getBotOrientation(cv::Mat img, std::vector<cv::Point> &targets)
 {
 	cv::Point front,back;
 	cv::Mat imgCol = isolateColor(img,frontMin,frontMax,50,255,0,255);
 	front = getCentroid(imgCol);
 	imgCol = isolateColor(img,backMin,backMax,50,255,0,255);
 	back = getCentroid(imgCol);
-	return std::atan2(front.y - back.y, front.x - back.x);
+	if(std::abs(targets.front().y - front.y) + std::abs(targets.front().x - front.x) <= distThres)
+	{
+		flashLED(5-targets.size());
+		targets.erase(targets.begin());
+	}
+	float botAngle = std::atan2(front.y - back.y, front.x - back.x);
+	float pathAngle = std::atan2(targets.front().y - front.y, targets.front().x - front.x);
+	return pathAngle - botAngle;
 }
+

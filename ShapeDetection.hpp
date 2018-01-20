@@ -20,11 +20,11 @@ int hueMax = 35;
 int satMin = 200;
 long int shapeArea = 0;
 int dilation = 2;
-const int Cols = 4;
+const int Cols = 5;
 
-enum Color {Red, Yellow, Green, Blue};  
-cv::Point ColorList[Cols] = {cv::Point(170,179), cv::Point(20,35), cv::Point(36,70), cv::Point(100,130)}; 
-int ColorOrder[Cols] = {Red, Yellow, Green, Blue};
+enum Color {Red, Yellow, Green, Blue, Cyan};  
+cv::Point ColorList[Cols] = {cv::Point(170,179), cv::Point(20,35), cv::Point(36,70), cv::Point(100,130), cv::Point(85,95)}; 
+int ColorOrder[Cols] = {Red, Yellow, Green, Blue, Cyan};
 
 cv::Mat isolateColor(cv::Mat img, int hMin, int hMax, int sMin, int sMax, int vMin, int vMax)
 {
